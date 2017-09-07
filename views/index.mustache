@@ -1,42 +1,47 @@
 <!doctype html>
-
+<html>
 <head>
   <title>Super Cool Todolist</title>
-  <style type="text/css">
-    /*ADD STYLES HERE */
-  </style>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css?family=Arvo|Indie+Flower" rel="stylesheet">
 </head>
 
 <body>
-  <form method="post" action="/">
+  <h1>Welcome back to your Todolist!</h1>
 
-    <input type="text" id="add_todo" name="todo" placeholder="Add new todo...">
-    <input type="submit" name="add" value="Add">
-
-    <ul class="current-todos">
-      {{ #todoList }}
-        {{ ^complete }}
-          <li>
-            <form method="post" action="/todos/{{ id }}">
-              <input type="submit" name="mark-done" id="submit_id" value="Mark done here!">
-              {{todo}}
-            </form>
-          </li>
-          {{ /complete }}
-        {{ /todoList }}
-    </ul>
+  <form method="post" action="/new">
+    <input type="text" name="new" class="new" placeholder="Enter a new todo here..."></input>
+    <input type="submit" name="submit" value="Add todo">
   </form>
 
-  <h1>Completed Todos</h1>
-    <ul class="completed-todos">
-      {{ #todoList }}
-        {{ #complete }}
-          <li>
-            {{todo}}
-          </li>
-        {{ /complete }}
-      {{ /todoList }}
+  <div class="incomplete-wrapper">
+    <h3>Incomplete todos</h3>
+    <ul>
+      {{ #todos }}
+        {{ ^completed }}
+      <li>
+        <p class="title-incomplete">{{ title }}</p>
+        <form method="post" action="/completed/{{ id }}">
+          <input type="submit" name="completed" value="Mark as complete">
+        </form>
+      </li>
+        {{ /completed }}
+      {{ /todos }}
     </ul>
+  </div>
+
+  <div class="completed-wrapper">
+    <h3>Completed todos</h3>
+    <ul>
+      {{ #todos }}
+      {{ #completed }}
+      <li class="completed">
+        <p>{{ title }}</p>
+      </li>
+        {{ /completed }}
+      {{ /todos }}
+    </ul>
+  </div>
 
 </body>
 

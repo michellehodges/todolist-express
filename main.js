@@ -4,9 +4,9 @@ const bodyparser = require('body-parser');
 
 const server = express();
 const todos = [
-  { todo: "Wash the car", complete: false, id: 0 },
-  { todo: "Feed the dog", complete: false, id: 1 },
-  { todo: "Run around the block", complete: true, id: 2 }];
+  { title: "Wash the car", completed: false, id: 0 },
+  { title: "Feed the dog", completed: false, id: 1 },
+  { title: "Run around the block", completed: true, id: 2 }];
 
 
 server.engine('mustache', mustache());
@@ -15,32 +15,33 @@ server.set('view engine', 'mustache');
 
 server.use(bodyparser.urlencoded({ extended: false }));
 
-server.get("/", function(req, res) {
+server.get('/', function(req, res) {
   res.render('index', {
-    todoList: todos,
+    todos: todos,
   });
 });
 
 let counter = 4;
 
-server.post('/', function(req, res) {
+server.post('/new', function(req, res) {
   counter += 1;
-  todoList.push({
-    item: req.body.item,
-    complete: false,
+  todos.push({
+    title: req.body.new,
+    completed: false,
     id: counter
   })
-
+  res.redirect('/');
 })
 
+server.post('/completed/:id', function(req,res) {
+  const id = parseInt(req.params.id);
 
-server.post("/:id", function(req, res) {
-  for (let i = 0; i < todoList.length; i++) {
-    if (parseFloat(todoList[i].id === parseFloat(req.params.id) {
-      todoList[i].complete = true;
-    }))
+  for (let i = 0; i < todos.length; i++) {
+    if (id === todos[i].id) {
+      todos[i].completed = true;
+    }
   }
-  res.render('index', {todoList: todos})
+  res.redirect('/');
 })
 
 server.listen(3000, function() {
